@@ -1,0 +1,36 @@
+{
+  "image": "http://dpcprotocol.com/box/images/356.png",
+  "name": "dNFT #356",
+  "description": "Order value mapping of DPCP",
+  "attributes": [
+    {
+      "value": 7,
+      "trait_type": "pool"
+    },
+    {
+      "value": {
+        "address": "0xf273b74ed80dd9edfc21cc9fc1185d588548884d",
+        "createtime": 1659066483000,
+        "dayearnings": 0.01961884,
+        "endtime": 1577836800000,
+        "id": 356,
+        "investamount": 100,
+        "inviteYieldRate": 1323,
+        "invitereceivedday": 0,
+        "left": 359.467477461719630555,
+        "orderBestAmount": 718.934954923439261109,
+        "pool": 7,
+        "rate": 0.02669939,
+        "receivedday": 0,
+        "right": 1437.869909846878522218,
+        "uid": 179,
+        "viprate": 100
+      },
+      "trait_type": "amount"
+    },
+    {
+      "value": 0.01961884,
+      "trait_type": "dayEarnings"
+    }
+  ]
+}
