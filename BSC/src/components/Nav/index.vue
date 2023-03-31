@@ -1,117 +1,123 @@
 <template>
-  <div class="Nav-container" id="nav">
-    <van-nav-bar
-      fixed
-      placeholder
-      z-index="10"
-      @click-left="onClickLeft"
-      @click-right="onClickRight"
-      :border="false"
-    >
+  <div class="Nav-container"
+       id="nav">
+    <van-nav-bar fixed
+                 placeholder
+                 z-index="10"
+                 @click-left="onClickLeft"
+                 @click-right="onClickRight"
+                 :border="false">
       <template #left>
         <i class="iconfont icon-menu"></i>
       </template>
       <template #title>
-        <img @click="gohome()" src="@/assets/currency-icons/eotc.png" alt="" />
+        <img @click="gohome()"
+             src="@/assets/currency-icons/eotc.png"
+             alt="" />
       </template>
-      <template #right v-if="uid != null">
-        <i  class="iconfont icon-wode"></i>
+      <template #right
+                v-if="uid != null">
+        <i class="iconfont icon-wode"></i>
       </template>
     </van-nav-bar>
 
-    <van-popup
-      v-model="zhiyaShow"
-      position="left"
-      get-container="#nav"
-      class="pop"
-    >
+    <!-- <van-popup v-model="zhiyaShow"
+               position="left"
+               get-container="#nav"
+               class="pop">
       <div class="content">
-        <div v-for="(item, index) in list" :key="index" @click="skip(item)">
+        <div v-for="(item, index) in list"
+             :key="index"
+             @click="skip(item)">
           <p>
             {{ item.title }}
           </p>
-          <img src="@/static/image/xie-jiantou.png" alt="" />
+          <img src="@/static/image/xie-jiantou.png"
+               alt="" />
         </div>
       </div>
-    </van-popup>
+    </van-popup> -->
   </div>
 </template>
 
 <script>
-import PubSub from "pubsub-js";
+import PubSub from 'pubsub-js'
 
 export default {
-  name: "MyNav",
+  name: 'MyNav',
   data() {
     return {
       zhiyaShow: false,
       list: [
-        { title: "EOTC官网", event: "https://eotc.im" },
-        { title: "链上理财赚币", event: "https://fi.eotc.im/" },
-        { title: "去中心化币币交易所",event: "https://swap.eotc.im/" },
-        { title: "去中心化借贷交易所" },
-        { title: "去中心化合约交易所" },
-        { title: "DID去中心化身份系统",event: "https://did.eotc.im/" },
-        { title: "去中心化应用系统" },
-        { title: "EOTC NFT", event: "https://nft.eotc.im/" },
-        { title: "EOTC 元宇宙" },
-        { title: "EOTC DAO" ,event: "https://dao.eotc.im/"},
+        { title: 'EOTC官网', event: 'https://eotc.im' },
+        { title: '链上理财赚币', event: 'https://fi.eotc.im/' },
+        { title: '去中心化币币交易所', event: 'https://swap.eotc.im/' },
+        { title: '去中心化借贷交易所' },
+        { title: '去中心化合约交易所' },
+        { title: 'DID去中心化身份系统', event: 'https://did.eotc.im/' },
+        { title: '去中心化应用系统' },
+        { title: 'EOTC NFT', event: 'https://nft.eotc.im/' },
+        { title: 'EOTC 元宇宙' },
+        { title: 'EOTC DAO', event: 'https://dao.eotc.im/' }
       ],
-      uid: "",
-    };
+      uid: ''
+    }
   },
   created() {
-    this.uid = localStorage.getItem('uid') 
-    PubSub.subscribe("setUid", (EventType,uid) => {
-      this.uid = uid;
-    });
+    this.uid = localStorage.getItem('uid')
+    PubSub.subscribe('setUid', (EventType, uid) => {
+      this.uid = uid
+    })
   },
   mounted() {
-    this.$bus.$on("sendBus", (data) => {
-      this.getPath();
-    });
+    this.$bus.$on('sendBus', (data) => {
+      this.getPath()
+    })
   },
 
   methods: {
     onClickLeft() {
-      this.zhiyaShow = !this.zhiyaShow;
+      // this.zhiyaShow = !this.zhiyaShow
+      // this.$router.push({
+      //   name: 'page'
+      // })
+      location.href = 'https://fi.eotc.im/#/page'
     },
     onClickRight() {
-      this.zhiyaShow = false;
+      this.zhiyaShow = false
       // this.pass();
-      if (this.$route.name == "userInfo") {
-        this.$router.back();
+      if (this.$route.name == 'userInfo') {
+        this.$router.back()
       } else {
         this.$router.push({
-          name: "userInfo",
-        });
+          name: 'userInfo'
+        })
       }
     },
     skip(item) {
       if (item.event != undefined) {
         const nextType = localStorage.getItem('netType')
-        if(nextType ==='bsc' && item.event ==='https://fi.eotc.im/'){
-           this.$toast.warning("功能即将上线！");
-           return false
+        if (nextType === 'bsc' && item.event === 'https://fi.eotc.im/') {
+          this.$toast.warning('功能即将上线！')
+          return false
         }
-        window.location.href = item.event;
+        window.location.href = item.event
       } else {
-        this.$toast.warning("功能即将上线！");
+        this.$toast.warning('功能即将上线！')
       }
     },
 
     //点击中间logo回到首页
     gohome() {
-      this.zhiyaShow = false;
-      this.$router.replace({ name: "index" });
-    },
-  },
-};
+      this.zhiyaShow = false
+      this.$router.replace({ name: 'index' })
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>
-
-/deep/ .van-nav-bar__title{
+/deep/ .van-nav-bar__title {
   display: flex !important;
   align-content: center;
 }
@@ -126,7 +132,7 @@ export default {
   top: calc(50% + 92px);
 }
 .pop {
-  width: 80%;
+  width: 100vw;
   height: 100vh;
   z-index: 10 !important;
   background: #1b2946;

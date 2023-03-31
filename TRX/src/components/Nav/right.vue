@@ -1,23 +1,22 @@
 <template>
   <div class="content">
     <div class="content_person">
-      <div class="person" @click="personCenter()">
+      <div class="person"
+           @click="personCenter()">
         <div class="person_i">
-          <img src="../../static/image/head.png" alt />
+          <img src="../../static/image/head.png"
+               alt />
         </div>
         <div class="person_text">
           <div class="person_title">
             <p v-if="iskyc_text === '已认证'">{{ uname }}</p>
             <p v-else>{{ iskyc_text }}</p>
-            <van-button
-              v-if="iskyc == 2"
-              round
-              type="info"
-              size="mini"
-              plain
-              hairline
-              >{{ item }}</van-button
-            >
+            <van-button v-if="iskyc == 2"
+                        round
+                        type="info"
+                        size="mini"
+                        plain
+                        hairline>{{ item }}</van-button>
           </div>
           <div class="person_asset">
             <p>
@@ -25,17 +24,16 @@
               {{ uid }}
             </p>
             <div>{{ briefMyAddress(myaddress) }}</div>
-            <van-icon class="text_icon" name="arrow" />
+            <van-icon class="text_icon"
+                      name="arrow" />
           </div>
         </div>
       </div>
       <div class="balance">
-        <div
-          v-for="(item, index) in moneylist"
-          :key="index"
-          @click="jump(item)"
-          :style="{ visibility: item.isshow ? 'hidden' : 'visible' }"
-        >
+        <div v-for="(item, index) in moneylist"
+             :key="index"
+             @click="jump(item)"
+             :style="{ visibility: item.isshow ? 'hidden' : 'visible' }">
           <template>
             <p>{{ item.title }}:{{ item.num }}</p>
           </template>
@@ -53,64 +51,78 @@
           <i class="iconfont icon-renzhengshenhe icon_left"></i>
         </template>
       </van-cell> -->
-      <van-cell title="二期推广" is-link @click="auditing('secondPhase')">
+      <van-cell title="二期推广"
+                is-link
+                @click="auditing('secondPhase')">
         <template #icon>
-          <img src="@/static/icon/second.png" alt="" />
+          <img src="@/static/icon/second.png"
+               alt="" />
         </template>
       </van-cell>
     </div>
 
-    <van-collapse v-model="activeName" accordion class="coll">
-      <van-collapse-item
-        v-for="(item, index) in list"
-        :key="index"
-        :title="item.title"
-        :name="index"
-        :border="false"
-        :ref="index + 'name'"
-      >
+    <van-collapse v-model="activeName"
+                  accordion
+                  class="coll">
+      <van-collapse-item v-for="(item, index) in list"
+                         :key="index"
+                         :title="item.title"
+                         :name="index"
+                         :border="false"
+                         :ref="index + 'name'">
         <template #icon>
-          <i :class="item.icon" class="coll_icon"></i>
+          <i :class="item.icon"
+             class="coll_icon"></i>
         </template>
-        <van-cell
-          v-for="(item2, index2) in item.childlist"
-          :key="index2"
-          :title="item2.title"
-          is-link
-          clickable
-          @click="go(item2)"
-        >
+        <van-cell v-for="(item2, index2) in item.childlist"
+                  :key="index2"
+                  :title="item2.title"
+                  is-link
+                  clickable
+                  @click="go(item2)">
           <template #default>
             <div v-if="item2.iskyc">
               <div v-if="iskyc == 2"></div>
-              <div v-else :class="setClass(iskyc)">{{ iskyc_text }}</div>
+              <div v-else
+                   :class="setClass(iskyc)">{{ iskyc_text }}</div>
             </div>
           </template>
         </van-cell>
       </van-collapse-item>
     </van-collapse>
     <div class="audit">
-      <van-cell title="交易数据" is-link @click="auditing('transaction')">
+      <van-cell title="交易数据"
+                is-link
+                @click="auditing('transaction')">
         <template #icon>
-          <img src="@/static/icon/chart.png" alt="" />
+          <img src="@/static/icon/chart.png"
+               alt="" />
         </template>
       </van-cell>
-      <van-cell title="新手引导" is-link @click="auditing(1)">
+      <van-cell title="新手引导"
+                is-link
+                @click="auditing(1)">
         <template #icon>
           <i class="iconfont icon-xinshouyindao icon_left"></i>
         </template>
       </van-cell>
-      <van-cell title="常见问题" is-link @click="auditing(2)">
+      <van-cell title="常见问题"
+                is-link
+                @click="auditing(2)">
         <template #icon>
           <i class="iconfont icon-changjianwenti icon_left"></i>
         </template>
       </van-cell>
-      <van-cell title="联系我们" is-link @click="auditing('contact')">
+      <van-cell title="联系我们"
+                is-link
+                @click="auditing('contact')">
         <template #icon>
           <i class="iconfont icon-lianxiwomen icon_left"></i>
         </template>
       </van-cell>
-      <van-cell title="反馈&建议" is-link @click="auditing('feedback')">
+      <van-cell title="反馈&建议"
+                is-link
+                @click="auditing('feedback')">
         <template #icon>
           <i class="iconfont icon-fankuijianyi icon_left"></i>
         </template>
@@ -138,11 +150,11 @@ export default {
             {
               title: '身份信息',
               iskyc: true,
-              event: 'identity',
+              event: 'identity'
             },
             { title: '收付款信息', event: 'receivingList' },
-            { title: '各公链绑定地址信息', event: 'chain' },
-          ],
+            { title: '各公链绑定地址信息', event: 'chain' }
+          ]
         },
         {
           title: '推广信息',
@@ -150,10 +162,10 @@ export default {
           childlist: [
             { title: '一期推广', event: 'firstPhase' },
             // { title: '分享链接', event: 'share' },
-            { title: '团队节点', event: 'team' },
+            { title: '团队节点', event: 'team' }
             // { title: "分享收益", event: "earnings" },
             // { title: '二期推广', event: 'secondPhase' },
-          ],
+          ]
         },
         // {
         //   title: "质押信息",
@@ -171,13 +183,13 @@ export default {
             { title: '委托单', event: 'order-Ticket' },
             { title: '仲裁', event: 'arbitration' },
             { title: '仲裁员', event: 'arbitrator' },
-            { title: '关注/黑名单', event: 'important-userList' },
-          ],
-        },
+            { title: '关注/黑名单', event: 'important-userList' }
+          ]
+        }
       ],
       moneylist: [
         { title: 'USDT', num: '12.00' },
-        { title: 'EOTC', num: '1', event: 'release' },
+        { title: 'EOTC', num: '1', event: 'release' }
       ],
       orderShow: false,
       myaddress: localStorage.getItem('myaddress'),
@@ -186,7 +198,7 @@ export default {
       iskyc_text: '',
       name: '',
       uname: '',
-      item: '',
+      item: ''
     }
   },
   mounted() {
@@ -201,29 +213,27 @@ export default {
     this.name = data.uname
 
     let sum = Number(localStorage.getItem('otczy')) + Number(localStorage.getItem('giftEotc'))
-    if (data.myjifen > 10 && sum > 100) {
+    if (sum == 100 || sum > 100) {
       this.item = '有效用户'
-
-      if (data.ztvip == '2') {
-        this.item = '信用节点'
-      }
-      if (data.ztvip == '3') {
-        this.item = '实时节点'
-      }
-      if (data.ztvip == '4') {
-        this.item = '中级节点'
-      }
-      if (data.ztvip == '5') {
-        this.item = '高级节点'
+      if (data.myjifen > 10) {
+        if (data.ztvip == '2') {
+          this.item = '信用节点'
+        }
+        if (data.ztvip == '3') {
+          this.item = '实时节点'
+        }
+        if (data.ztvip == '4') {
+          this.item = '中级节点'
+        }
+        if (data.ztvip == '5') {
+          this.item = '高级节点'
+        }
       }
     } else {
       this.item = '游客'
     }
 
-    this.myaddress =
-      data.myaddress.substring(0, 10) +
-      '...' +
-      data.myaddress.substring(data.myaddress.length - 10, data.myaddress.length)
+    this.myaddress = data.myaddress.substring(0, 10) + '...' + data.myaddress.substring(data.myaddress.length - 10, data.myaddress.length)
 
     this.uid = data.uid
     this.iskyc = data.iskyc
@@ -258,24 +268,17 @@ export default {
         } else if (this.iskyc == 1 && data.iskyc) {
           Toast.loading({
             message: '审核中...',
-            forbidClick: true,
+            forbidClick: true
           })
         } else if (this.iskyc == -1 && data.iskyc) {
           this.$router.push({ name: 'erroridentity' })
         } else {
           if (data.event === 'order-Ticket') {
-            if (
-              localStorage.getItem('myeotc') < 5000 &&
-              Number(localStorage.getItem('giftNFT')) == 0
-            ) {
+            if (localStorage.getItem('myeotc') < 5000 && Number(localStorage.getItem('giftNFT')) == 0) {
               this.$toast.warning(
                 <div>
-                  <p style="font-size:14px;margin:5px;color:red">
-                    您质押的EOTC不足
-                  </p>
-                  <p style="font-size:14px;margin:5px 0;">
-                    EOTC质押5000以上的会员才能挂单
-                  </p>
+                  <p style="font-size:14px;margin:5px;color:red">您质押的EOTC不足</p>
+                  <p style="font-size:14px;margin:5px 0;">EOTC质押5000以上的会员才能挂单</p>
                 </div>
               )
               return false
@@ -283,12 +286,8 @@ export default {
             if (getItem('myjifen') < 9) {
               this.$toast.warning(
                 <div>
-                  <p style="font-size:14px;margin:5px;color:red">
-                    您的积分不足
-                  </p>
-                  <p style="font-size:14px;margin:5px">
-                    拥有10积分的会员才能挂单
-                  </p>
+                  <p style="font-size:14px;margin:5px;color:red">您的积分不足</p>
+                  <p style="font-size:14px;margin:5px">拥有10积分的会员才能挂单</p>
                 </div>
               )
               return false
@@ -334,8 +333,8 @@ export default {
         return 'coll_error'
       }
       //console.log(num);
-    },
-  },
+    }
+  }
 }
 </script>
 

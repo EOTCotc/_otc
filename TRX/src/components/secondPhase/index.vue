@@ -3,7 +3,8 @@
     <div class="header">
       <p>{{jdtype}}</p>
       <div v-if="teamName!=null">
-        <img src="@/static/icon/shequ.png" alt />
+        <img src="@/static/icon/shequ.png"
+             alt />
         <p>{{teamName}}</p>
       </div>
     </div>
@@ -16,9 +17,11 @@
           <p>{{ USDT }}</p>
         </div>
         <div>
-          <p class="boxName" @click="$router.push({name:'look'})">
+          <p class="boxName"
+             @click="$router.push({name:'look'})">
             <span>EOTC</span>
-            <van-icon name="arrow" size="0.45rem" />
+            <van-icon name="arrow"
+                      size="0.45rem" />
           </p>
           <p>{{ EOTC }}</p>
         </div>
@@ -36,31 +39,40 @@
           <p>交易质押</p>
           <p>OTC 币币质押明细</p>
           <span>去查看></span>
-          <img src="../../static/icon/gold.png" alt />
+          <img src="../../static/icon/gold.png"
+               alt />
         </div>
         <div @click="jump(2)">
           <p>链上理财赚币</p>
           <p>质押收益明细</p>
           <span>去查看></span>
-          <img src="../../static/icon/wallet.png" alt />
+          <img src="../../static/icon/wallet.png"
+               alt />
         </div>
         <div @click="jump(3)">
           <p>EOTC NFT</p>
           <p>推广收益明细</p>
           <span>去查看></span>
-          <img src="../../static/icon/nft.png" alt />
+          <img src="../../static/icon/nft.png"
+               alt />
         </div>
         <div @click="jump(4)">
           <p>流动性挖矿</p>
           <p>推广收益明细</p>
           <span>去查看></span>
-          <img src="../../static/icon/needle.png" alt />
+          <img src="../../static/icon/needle.png"
+               alt />
         </div>
       </div>
       <div class="recharge">
-        <van-button plain round type="info" :to="{name:'Withdraw',
+        <van-button plain
+                    round
+                    type="info"
+                    :to="{name:'Withdraw',
         params:{EOTC,USDT}}">提现</van-button>
-        <van-button round type="info" :to="{name:'recharge'}">充值</van-button>
+        <van-button round
+                    type="info"
+                    :to="{name:'recharge'}">充值</van-button>
       </div>
     </div>
   </div>
@@ -69,7 +81,7 @@
 <script>
 //二期推广
 import { UserInfo } from '@/utils/web3'
-import { getinfo } from "@/api/arbitrationMsg";
+import { getinfo } from '@/api/arbitrationMsg'
 export default {
   data() {
     return {
@@ -79,31 +91,32 @@ export default {
       card: 0,
       //节点类型
       jdtype: '',
-      teamName: '',
+      teamName: ''
     }
   },
   created() {
-    getinfo({}).then(res=>{
-      this.teamName=res.items.comName
+    getinfo({}).then((res) => {
+      this.teamName = res.items.comName
     })
     let data = UserInfo()
     this.USDT = data.usdt_ye
     this.EOTC = (data.eotc_stake * 1).toFixed(2)
     let sum = Number(localStorage.getItem('otczy')) + Number(localStorage.getItem('giftEotc'))
-    if (data.myjifen > 10 && sum > 100) {
+    if (sum == 100 || sum > 100) {
       this.jdtype = '有效用户'
-
-      if (data.ztvip == '2') {
-        this.jdtype = '信用节点'
-      }
-      if (data.ztvip == '3') {
-        this.jdtype = '实时节点'
-      }
-      if (data.ztvip == '4') {
-        this.jdtype = '中级节点'
-      }
-      if (data.ztvip == '5') {
-        this.jdtype = '高级节点'
+      if (data.myjifen > 10) {
+        if (data.ztvip == '2') {
+          this.jdtype = '信用节点'
+        }
+        if (data.ztvip == '3') {
+          this.jdtype = '实时节点'
+        }
+        if (data.ztvip == '4') {
+          this.jdtype = '中级节点'
+        }
+        if (data.ztvip == '5') {
+          this.jdtype = '高级节点'
+        }
       }
     } else {
       this.jdtype = '游客'
@@ -125,8 +138,8 @@ export default {
           this.$router.push({ name: 'mining' })
           break
       }
-    },
-  },
+    }
+  }
 }
 </script>
 

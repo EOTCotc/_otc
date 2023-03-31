@@ -5,35 +5,42 @@
       <div class="top">
         <p>提现类别</p>
         <div class="category">
-          <p
-            v-for="(item,index) in category"
-            :key="index"
-            :class="item.show?'action':''"
-            @click="switchTo(index)"
-          >{{item.title}}</p>
+          <p v-for="(item,index) in category"
+             :key="index"
+             :class="item.show?'action':''"
+             @click="switchTo(index)">{{item.title}}</p>
         </div>
       </div>
       <div class="center">
-        <van-field v-model="netType" :border="false" readonly label="网络类型" />
-        <van-field v-model="address2" :border="false" readonly label="提现地址" />
-        <van-field
-          v-model="num"
-          type="number"
-          @blur="blur(num)"
-          :border="false"
-          label="提现数量"
-          placeholder="请输入提现数量"
-        >
+        <van-field v-model="netType"
+                   :border="false"
+                   readonly
+                   label="网络类型" />
+        <van-field v-model="address2"
+                   :border="false"
+                   readonly
+                   label="提现地址" />
+        <van-field v-model="num"
+                   type="number"
+                   @blur="blur(num)"
+                   :border="false"
+                   label="提现数量"
+                   placeholder="请输入提现数量">
           <template #extra>
-            <div class="all" @click="all()">全部</div>
+            <div class="all"
+                 @click="all()">全部</div>
           </template>
         </van-field>
         <p v-if="netType=='bsc'">手续费{{random}}BSC</p>
         <p v-else>手续费{{random}}TRX</p>
       </div>
       <div class="footer">
-        <van-button type="info" block round :disabled="num!=''?false:true" @click="recharge(num)">提交</van-button>
-        <p>提币到账时间为T+1。</p>
+        <van-button type="info"
+                    block
+                    round
+                    :disabled="num!=''?false:true"
+                    @click="recharge(num)">提交</van-button>
+        <p>时间为T+1。</p>
         <p @click="look()">查看提现记录</p>
       </div>
     </div>
@@ -50,7 +57,7 @@ import { Toast, Dialog } from 'vant'
 export default {
   //提现
   components: {
-    white,
+    white
   },
   data() {
     return {
@@ -59,7 +66,7 @@ export default {
         { title: 'EOTC', show: true },
         { title: 'USDT', show: false },
         { title: 'LP', show: false },
-        { title: 'NFT', show: false },
+        { title: 'NFT', show: false }
       ],
       action: 0,
       netType: '',
@@ -70,7 +77,7 @@ export default {
       EOTCnum: '',
       USDTnum: '',
 
-      random: 0,
+      random: 0
       // net: '',
     }
   },
@@ -80,10 +87,7 @@ export default {
 
     this.netType = localStorage.getItem('netType')
     this.address = localStorage.getItem('myaddress')
-    this.address2 =
-      this.address.substring(0, 10) +
-      '...' +
-      this.address.substring(this.address.length - 10, this.address.length)
+    this.address2 = this.address.substring(0, 10) + '...' + this.address.substring(this.address.length - 10, this.address.length)
 
     if (this.netType == 'bsc') {
       this.random = this.getRandom(33, 66) / 10000
@@ -103,7 +107,7 @@ export default {
     recharge(num) {
       let coin = this.category[this.action].title.toLowerCase()
       console.log(coin, num)
-      if (this.action != 0) {
+      if (this.action != 0 && this.action != 1) {
         this.$toast.warning('功能暂未开放，请耐心等待。')
         return
       }
@@ -133,7 +137,7 @@ export default {
       Toast.loading({
         message: '加载中...',
         forbidClick: true,
-        duration: 0,
+        duration: 0
       })
       getTrxBalance(function () {
         oneSfeotc(that.random).then((success) => {
@@ -142,25 +146,19 @@ export default {
           WithdrawCoins({
             num: that.num,
             hx: success.txid,
-            coin: coin,
+            coin: coin
           }).then((res) => {
             Toast.clear()
             if (res.data.Code == 0) {
-              let data = [
-                that.num,
-                coin,
-                success.txid,
-                localStorage.getItem('myaddress'),
-                localStorage.getItem('mysign'),
-              ]
+              let data = [that.num, coin, success.txid, localStorage.getItem('myaddress'), localStorage.getItem('mysign')]
               Dialog.alert({
                 title: '错误信息',
                 message: data,
-                showConfirmButton: false,
+                showConfirmButton: false
               })
 
               that.$toast.warning('错误信息，请截图发送给管理员！', {
-                timeout: 30000,
+                timeout: 30000
               })
               return
             }
@@ -188,11 +186,9 @@ export default {
       if (this.action == 0) {
         // console.log(this.EOTC)
         this.num = this.EOTCnum
-      }
-      // else if (this.action == 1) {
-      //   this.num = this.USDTnum
-      // }
-      else {
+      } else if (this.action == 1) {
+        this.num = this.USDTnum
+      } else {
         this.$toast.warning('功能暂未开放，请耐心等待。')
       }
       console.log(this.num)
@@ -200,8 +196,8 @@ export default {
     blur(num) {
       if (num < 0) this.num = 0
       else if (num > this.EOTCnum) this.num = this.EOTCnum
-    },
-  },
+    }
+  }
 }
 </script>
 
