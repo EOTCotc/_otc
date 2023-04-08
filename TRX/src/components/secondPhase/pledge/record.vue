@@ -1,13 +1,22 @@
 <template>
   <div>
-    <van-nav-bar
-      :title="title"
-      :border="false"
-      fixed
-      placeholder
-      left-arrow
-      @click-left="$router.back()"
-    />
+    <van-dialog v-model="show"
+                @confirm="select"
+                title="请选择"
+                show-cancel-button>
+      <van-radio-group v-model="radio">
+        <van-radio name="6">6个月</van-radio>
+        <van-radio name="12">12个月</van-radio>
+        <van-radio name="24">24个月</van-radio>
+        <van-radio name="36">36个月</van-radio>
+      </van-radio-group>
+    </van-dialog>
+    <van-nav-bar :title="title"
+                 :border="false"
+                 fixed
+                 placeholder
+                 left-arrow
+                 @click-left="$router.back()" />
     <div class="content">
       <div class="top">
         <div class="frist">
@@ -26,90 +35,128 @@
         </div>
       </div>
       <div class="center">
-        <div class="empty" v-if="list.length==0">
-          <img src="@/static/icon/kong.png" alt />
+        <div class="empty"
+             v-if="list.length==0">
+          <img src="@/static/icon/kong.png"
+               alt />
           <p>暂无数据</p>
         </div>
-        <div class="orderList" v-for="(item,index) in list" :key="index">
+        <div class="orderList"
+             v-for="(item,index) in list"
+             :key="index">
           <div class="listTop">
             <p>订单编号: {{item.id}}</p>
             <div class="topFlex">
               <p>{{item.date}}</p>
               <p v-if="item.state==1">质押到期:{{item.time}}</p>
+              <p>
+                <van-button @click="unStakeOtc(item.id)"
+                            size="small"
+                            v-if="item.state==2"
+                            type="info">复投</van-button>
+                <van-button @click="unStake(item.id)"
+                            size="small"
+                            v-if="item.state==2"
+                            type="info">赎回</van-button>
+
+              </p>
             </div>
           </div>
           <div class="listCenter">
             <div>
               <p>质押数量</p>
-              <p>{{item.znum}}</p>
+              <p>{{(item.znum*1).toFixed(2)}}</p>
             </div>
             <div>
               <p v-if="item.state==3">累计收益</p>
               <p v-else>预估收益</p>
-              <p>+{{item.reward}}</p>
+              <p>+{{(item.reward*1).toFixed(2)}}</p>
             </div>
             <div v-if="item.state==1">
               <p>到期可赎回</p>
-              <p>{{item.zong}}</p>
+              <p>{{(item.zong*1).toFixed(2)}}</p>
             </div>
           </div>
-          <div
-            class="listState"
-            :class="item.state==1?'State2':item.state==2?'State3':'State1'"
-          >{{item.text}}</div>
+          <div class="listState"
+               :class="item.state==1?'State2':item.state==2?'State3':'State1'">{{item.text}}</div>
         </div>
+
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { MyStakeList } from '@/api/trxRequest'
-import { Toast } from 'vant'
+import { MyStakeList, UnStakeOtc } from '@/api/trxRequest'
+import { Toast, Dialog } from 'vant'
 export default {
   data() {
     return {
+      code: '',
+      show: false,
       list: [],
       zq: '',
       title: '质押记录',
-
+      radio: '6',
       //总收益
       allsy: 0,
       //总当前质押
       allzy: 0,
       //总待赎回
-      allsh: 0,
+      allsh: 0
     }
   },
   created() {
     Toast.loading({
       duration: 0, // 持续展示 toast
       forbidClick: true,
-      message: '加载中',
+      message: '加载中'
     })
-    
+    this.list = []
     this.StakeList()
   },
   methods: {
-    
-    StakeList() {
-      MyStakeList({}).then((res) => {
-        Toast.clear()
+    select() {
+      console.log(this.radio)
+      UnStakeOtc(this.code, this.radio).then((res) => {
+        if ((res.data.State = 2)) {
+          this.StakeList()
+        }
+      })
+    },
+    async StakeList() {
+      await MyStakeList({}).then((res) => {
         let data = res.data
         for (let i of data) {
-
+          console.log(i)
           var nowdate = Date.parse(new Date())
           var Newdate = new Date(Date.parse(i.date.replace(/-/g, '/')))
           Newdate = Newdate.setMonth(Newdate.getMonth() + Number(i.uid))
           i.uid = i.uid * 1
-          if (i.uid == 6) {
-            i.reward = (i.znum * 1 * 0.48 * i.uid) / 12
-          } else if (i.uid == 12) {
-            i.reward = (i.znum * 1 * 0.72 * i.uid) / 12
-          } else if (i.uid == 24) {
-            i.reward = (i.znum * 1 * i.uid) / 12
-          } else if (i.uid == 36) {
-            i.reward = (i.znum * 1 * 1.2 * i.uid) / 12
+
+          console.log(i.date)
+          console.log(new Date(i.date).getTime())
+          let oldDate = new Date(i.date).getTime()
+          if (oldDate / 1000 > 1667279640) {
+            if (i.uid == 6) {
+              i.reward = (i.znum * 1 * 0.24 * i.uid) / 12
+            } else if (i.uid == 12) {
+              i.reward = (i.znum * 1 * 0.36 * i.uid) / 12
+            } else if (i.uid == 24) {
+              i.reward = (i.znum * 1 * 0.5 * i.uid) / 12
+            } else if (i.uid == 36) {
+              i.reward = (i.znum * 1 * 0.6 * i.uid) / 12
+            }
+          } else {
+            if (i.uid == 6) {
+              i.reward = (i.znum * 1 * 0.48 * i.uid) / 12
+            } else if (i.uid == 12) {
+              i.reward = (i.znum * 1 * 0.72 * i.uid) / 12
+            } else if (i.uid == 24) {
+              i.reward = (i.znum * 1 * i.uid) / 12
+            } else if (i.uid == 36) {
+              i.reward = (i.znum * 1 * 1.2 * i.uid) / 12
+            }
           }
 
           if (Newdate > nowdate) {
@@ -119,14 +166,44 @@ export default {
             i.zong = (i.znum * 1 + i.reward).toFixed(2)
             this.allzy = Number(this.allzy * 1 + i.znum * 1).toFixed(2)
           } else {
-            i.state = 2
-            i.text = '待赎回'
-            console.log(this.allsh)
-            this.allsh = Number(this.allsh * 1 + i.znum * 1 + i.reward).toFixed(2)
+            if (i.type == 9) {
+              i.state = 9
+              i.text = '已赎回'
+              this.allsh = Number(this.allsh * 1 + i.znum * 1 + i.reward).toFixed(2)
+            } else {
+              i.state = 2
+              i.text = '待赎回'
+              console.log(this.allsh)
+              this.allsh = Number(this.allsh * 1 + i.znum * 1 + i.reward).toFixed(2)
+            }
           }
         }
         this.list = data.reverse()
       })
+      console.log(this.list)
+      Toast.clear()
+    },
+    // 赎回
+    unStake(id) {
+      Dialog.confirm({
+        title: '提示',
+        message: '确定赎回吗？'
+      })
+        .then(() => {
+          UnStakeOtc(id, 0).then((res) => {
+            if ((res.data.State = 2)) {
+              this.StakeList()
+            }
+          })
+        })
+        .catch(() => {
+          // on cancel
+        })
+    },
+    // 复投
+    unStakeOtc(id) {
+      this.show = true
+      this.code = id
     },
     // 参数 str 为时间戳 可以传入10位也可以传入13位
     // 参数 bool的值可传true或者false或者不传，如果需要显示秒则传true，不需要显示则传false或者不传
@@ -145,29 +222,9 @@ export default {
         c_Sen = c_Date.getSeconds()
       if (bool) {
         // 判断是否需要显示秒
-        var c_Time =
-          c_Year +
-          '-' +
-          this.getzf(c_Month) +
-          '-' +
-          this.getzf(c_Day) +
-          ' ' +
-          this.getzf(c_Hour) +
-          ':' +
-          this.getzf(c_Min) +
-          ':' +
-          this.getzf(c_Sen) //最后拼接时间
+        var c_Time = c_Year + '-' + this.getzf(c_Month) + '-' + this.getzf(c_Day) + ' ' + this.getzf(c_Hour) + ':' + this.getzf(c_Min) + ':' + this.getzf(c_Sen) //最后拼接时间
       } else {
-        var c_Time =
-          c_Year +
-          '-' +
-          this.getzf(c_Month) +
-          '-' +
-          this.getzf(c_Day) +
-          ' ' +
-          this.getzf(c_Hour) +
-          ':' +
-          this.getzf(c_Min) //最后拼接时间
+        var c_Time = c_Year + '-' + this.getzf(c_Month) + '-' + this.getzf(c_Day) + ' ' + this.getzf(c_Hour) + ':' + this.getzf(c_Min) //最后拼接时间
       }
       return c_Time
     },
@@ -176,8 +233,8 @@ export default {
         c_num = '0' + c_num
       }
       return c_num
-    },
-  },
+    }
+  }
 }
 </script>
 
@@ -191,6 +248,14 @@ export default {
 }
 /deep/.van-nav-bar .van-icon {
   color: #fff;
+}
+/deep/ .van-button {
+  width: fit-content;
+  margin-left: 6px;
+}
+/deep/ .van-radio-group .van-radio {
+  margin: 20px;
+  margin-left: 100px;
 }
 .content {
   padding: 49px 30px 88px;
@@ -256,6 +321,7 @@ export default {
           display: flex;
           justify-content: space-between;
           margin: 40px 0 20px;
+          align-items: center;
         }
       }
     }

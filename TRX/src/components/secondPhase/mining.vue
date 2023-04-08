@@ -3,7 +3,8 @@
     <white :title="title"></white>
     <div class="content">
       <div class="header">
-        <img src="../../static/icon/shovel.png" alt />
+        <img src="../../static/icon/shovel.png"
+             alt />
         <p>
           推广总收益
           <span>(EOTC)</span>
@@ -31,7 +32,9 @@
       <div class="rule">
         <p class="title">流动性挖矿规则</p>
         <div>
-          <p>质押EOTC\USDT交易对LP凭证6-24个月</p>100-4999个双币质押LP凭证 正常年化收益
+          <p>质押EOTC\USDT交易对LP凭证6-24个月</p>
+          质押500LP双向释放注册空投币到总量，可随时变现,可享受间推收益、社区䃼贴、节点䃼贴
+          <br />100-4999个双币质押LP凭证 正常年化收益
           <br />5000-49999个双币质押LP凭证 1.2倍年化收益
           <br />50000个及以上双币质押LP凭证 1.4倍年化收益
           <br />年化收益计算按双币质押LP凭证个数乘以年化收益率，奖励EOTC代币
@@ -44,10 +47,9 @@
         </div>
         <div>
           <p>流动性挖矿推广奖励</p>质押EOTC\USDT交易对LP凭证6-24个月到DAPP(24个月与12个月的推广奖励相同)，用户和上级获得EOTC代币奖励
-          <br />直推收益的20%
-          <br />间推收益的5%
-          <br />社区补贴 收益的1%
-          拿下级十代社区
+          <br />直推收益的30%
+          <br />间推收益的10%(质押500LP以上)
+          <br />社区补贴 收益的2% 拿下级十代社区
           <br />节点补贴
           <br />1、高级节点15%
           <br />2、中级节点13%
@@ -57,7 +59,10 @@
         <div> EOTC SWAP聚合币币交易所收取千分之3手续费，其中千分之0.5归属平台，千分之2.5按比例分给所有LP持有人。质押LP凭证进行流动性挖矿不影响手续费收益，可以获得手续费和流动性挖矿双重收益。</div>
       </div>
       <div class="footer">
-        <van-button color="#f69540" block round @click="jump()">流动性挖矿</van-button>
+        <van-button color="#f69540"
+                    block
+                    round
+                    @click="jump()">流动性挖矿</van-button>
       </div>
     </div>
   </div>
@@ -68,7 +73,7 @@ import white from '@/components/Nav/white.vue'
 //流动性挖矿收益
 export default {
   components: {
-    white,
+    white
   },
   data() {
     return {
@@ -77,7 +82,7 @@ export default {
       zt: '',
       jt: '',
       team: '',
-      node: '',
+      node: ''
     }
   },
   created() {
@@ -91,8 +96,8 @@ export default {
   methods: {
     jump() {
       window.location.href = 'https://swap.eotc.im'
-    },
-  },
+    }
+  }
 }
 </script>
 

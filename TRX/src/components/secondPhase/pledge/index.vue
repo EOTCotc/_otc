@@ -1,18 +1,25 @@
 <template>
   <div class="content">
-    <van-nav-bar fixed placeholder :title="title" left-arrow @click-left="onClickLeft" />
+    <van-nav-bar fixed
+                 placeholder
+                 :title="title"
+                 left-arrow
+                 @click-left="onClickLeft" />
     <div class="top">
       <div @click="convert()">
         <p>{{ zyText }}</p>
-        <img src="../../../static/icon/bothway.png" alt />
+        <img src="../../../static/icon/bothway.png"
+             alt />
       </div>
       <p>{{jdtype}}</p>
     </div>
     <div class="center">
       <div class="total">
-        <div class="total_flex" @click="record()">
+        <div class="total_flex"
+             @click="record()">
           <div class="left_flex">
-            <img src="@/static/image/zhiya2.png" alt />
+            <img src="@/static/image/zhiya2.png"
+                 alt />
 
             <p>质押总额</p>
           </div>
@@ -27,8 +34,12 @@
 
         <div class="total_flex">
           <div class="left_flex">
-            <img v-show="zyShow" src="@/static/image/zhiya3.png" alt />
-            <img v-show="!zyShow" src="@/static/image/discounts.png" alt />
+            <img v-show="zyShow"
+                 src="@/static/image/zhiya3.png"
+                 alt />
+            <img v-show="!zyShow"
+                 src="@/static/image/discounts.png"
+                 alt />
             <p>{{ brokerage }}</p>
           </div>
           <div class="number">
@@ -40,14 +51,20 @@
       <div class="service">
         <div>
           <div>
-            <img v-show="zyShow" src="@/static/image/zhiya.png" alt />
+            <img v-show="zyShow"
+                 src="@/static/image/zhiya.png"
+                 alt />
             <p>免手续费额度</p>
           </div>
           <p v-if="zyShow">{{ usdt }} USDT</p>
         </div>
-        <van-progress class="progress" :percentage="percentage" color="#868BE9" stroke-width="8" />
+        <van-progress class="progress"
+                      :percentage="percentage"
+                      color="#868BE9"
+                      stroke-width="8" />
       </div>
-      <div v-show="zyShow" class="datum">
+      <div v-show="zyShow"
+           class="datum">
         <div>
           <p>赠送质押EOTC</p>
           <p>{{presenter}}</p>
@@ -117,12 +134,24 @@
         <p class="hint">提示:今日链上理财赚币中定期质押(6个月、12个月、24个月)总计超过1000EOTC,次日即可减免25%的去中心化币币交易所手续费。</p>
       </div>
 
-      <div v-show="zyShow" class="footer">
-        <van-button color="#1B2945" block round @click="jump(1)">交易质押</van-button>
-        <van-button color="#1B2945" plain block round @click="jump(2)">赎回</van-button>
+      <div v-show="zyShow"
+           class="footer">
+        <van-button color="#1B2945"
+                    block
+                    round
+                    @click="jump(1)">交易质押</van-button>
+        <van-button color="#1B2945"
+                    plain
+                    block
+                    round
+                    @click="jump(2)">赎回</van-button>
       </div>
-      <div class="footer2" v-show="!zyShow">
-        <van-button color="#1B2945" block round @click="jump(3)">链上理财赚币</van-button>
+      <div class="footer2"
+           v-show="!zyShow">
+        <van-button color="#1B2945"
+                    block
+                    round
+                    @click="jump(3)">链上理财赚币</van-button>
       </div>
     </div>
   </div>
@@ -150,8 +179,7 @@ export default {
       jdtype: '',
       percentage: 0,
       //手续费分红
-      giftUSDT:''
-
+      giftUSDT: ''
     }
   },
   mounted() {
@@ -168,19 +196,21 @@ export default {
     let data = UserInfo()
     let sum = Number(localStorage.getItem('otczy')) + Number(localStorage.getItem('giftEotc'))
     console.log(data.ztvip)
-    if (data.myjifen > 10 && sum > 100) {
+    if (sum > 100 || sum == 100) {
       this.jdtype = '有效用户'
-      if (data.ztvip == '2') {
-        this.jdtype = '信用节点'
-      }
-      if (data.ztvip == '3') {
-        this.jdtype = '实时节点'
-      }
-      if (data.ztvip == '4') {
-        this.jdtype = '中级节点'
-      }
-      if (data.ztvip == '5') {
-        this.jdtype = '高级节点'
+      if (data.myjifen > 10) {
+        if (data.ztvip == '2') {
+          this.jdtype = '信用节点'
+        }
+        if (data.ztvip == '3') {
+          this.jdtype = '实时节点'
+        }
+        if (data.ztvip == '4') {
+          this.jdtype = '中级节点'
+        }
+        if (data.ztvip == '5') {
+          this.jdtype = '高级节点'
+        }
       }
     } else {
       this.jdtype = '游客'
@@ -265,8 +295,8 @@ export default {
         }
         this.earnings = zongnum
       })
-    },
-  },
+    }
+  }
 }
 </script>
 

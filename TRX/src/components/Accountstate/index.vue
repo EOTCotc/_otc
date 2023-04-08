@@ -7,53 +7,64 @@
         :after-read="afterRead"
         :preview-image="false"
       >-->
-      <van-cell title="头像" value="内容" is-link>
+      <van-cell title="头像"
+                value="内容"
+                is-link>
         <template #default>
           <div class="img_flex">
             <div class="img_bg">
-              <img :src="url" alt />
+              <img :src="url"
+                   alt />
             </div>
           </div>
         </template>
       </van-cell>
       <!-- </van-uploader> -->
 
-      <van-cell title="邮箱" :value="email" />
-      <van-cell title="UID" :value="uid">
+      <van-cell title="邮箱"
+                :value="email" />
+      <van-cell title="UID"
+                :value="uid">
         <template #right-icon>
-          <i class="iconfont icon-fuzhi icon" @click="handleCopy(uid)"></i>
+          <i class="iconfont icon-fuzhi icon"
+             @click="handleCopy(uid)"></i>
         </template>
       </van-cell>
-      <van-cell title="节点类型" :value="item" />
-      <van-cell title="设置电报群" is-link @click="show = true" />
+      <van-cell title="节点类型"
+                :value="item" />
+      <van-cell title="设置电报群"
+                is-link
+                @click="show = true" />
       <van-cell title="绑定钱包地址">
         <template #default>
           <div class="van-ellipsis">{{ briefMyAddress(address) }}</div>
         </template>
         <template #right-icon>
-          <i class="iconfont icon-fuzhi icon" @click="handleCopy(sureaddress)"></i>
+          <i class="iconfont icon-fuzhi icon"
+             @click="handleCopy(sureaddress)"></i>
         </template>
       </van-cell>
-      <van-cell title is-link value="退出登录" @click="outshow = true" />
-      <van-dialog
-        v-model="outshow"
-        show-cancel-button
-        title="温馨提示"
-        message="确定要退出吗？"
-        @confirm="logout"
-      ></van-dialog>
+      <van-cell title
+                is-link
+                value="退出登录"
+                @click="outshow = true" />
+      <van-dialog v-model="outshow"
+                  show-cancel-button
+                  title="温馨提示"
+                  message="确定要退出吗？"
+                  @confirm="logout"></van-dialog>
 
-      <van-dialog
-        v-model="show"
-        show-cancel-button
-        title="设置"
-        @confirm="setSure"
-        :before-close="beforeClose"
-      >
+      <van-dialog v-model="show"
+                  show-cancel-button
+                  title="设置"
+                  @confirm="setSure"
+                  :before-close="beforeClose">
         <template #default>
           <div class="setTelegram">
             <van-cell-group :border="false">
-              <van-field v-model="value" clearable placeholder="请输入电报地址" />
+              <van-field v-model="value"
+                         clearable
+                         placeholder="请输入电报地址" />
             </van-cell-group>
           </div>
         </template>
@@ -72,7 +83,7 @@ import { clearmymes } from '@/api/payverification'
 export default {
   //账号信息
   components: {
-    [Dialog.Component.name]: Dialog.Component,
+    [Dialog.Component.name]: Dialog.Component
   },
   data() {
     return {
@@ -90,7 +101,7 @@ export default {
       outshow: false,
       show: false,
 
-      value: '',
+      value: ''
     }
   },
   mounted() {
@@ -100,7 +111,7 @@ export default {
     logout() {
       clearmymes()
       this.$router.push({
-        name: 'login',
+        name: 'login'
       })
     },
     handleCopy(val) {
@@ -119,20 +130,21 @@ export default {
       let asd = UserInfo()
 
       let sum = Number(localStorage.getItem('otczy')) + Number(localStorage.getItem('giftEotc'))
-      if (asd.myjifen > 10 && sum > 100) {
+      if (sum == 100 || sum > 100) {
         this.item = '有效用户'
-
-        if (asd.ztvip == '2') {
-          this.item = '信用节点'
-        }
-        if (asd.ztvip == '3') {
-          this.item = '实时节点'
-        }
-        if (asd.ztvip == '4') {
-          this.item = '中级节点'
-        }
-        if (asd.ztvip == '5') {
-          this.item = '高级节点'
+        if (asd.myjifen > 10) {
+          if (asd.ztvip == '2') {
+            this.item = '信用节点'
+          }
+          if (asd.ztvip == '3') {
+            this.item = '实时节点'
+          }
+          if (asd.ztvip == '4') {
+            this.item = '中级节点'
+          }
+          if (asd.ztvip == '5') {
+            this.item = '高级节点'
+          }
         }
       } else {
         this.item = '游客'
@@ -141,10 +153,7 @@ export default {
       this.email = asd.email
       this.uid = asd.uid
       this.sureaddress = asd.myaddress
-      this.address =
-        asd.myaddress.substring(0, 10) +
-        '...' +
-        asd.myaddress.substring(asd.myaddress.length - 10, asd.myaddress.length)
+      this.address = asd.myaddress.substring(0, 10) + '...' + asd.myaddress.substring(asd.myaddress.length - 10, asd.myaddress.length)
       this.init()
     },
     init() {
@@ -180,8 +189,8 @@ export default {
       }
       done()
       // }
-    },
-  },
+    }
+  }
 }
 </script>
 
